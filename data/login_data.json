@@ -1,0 +1,85 @@
+{
+
+  "ui_validations": [
+    {
+        "test_id": "U001",
+        "scenario_name": "Eye Icon Control",
+        "username_input": "Deniz",
+        "password_input": "pass",
+        "expected_attribute": "text"
+
+    },
+    {
+        "test_id": "U002",
+        "scenario_name": "Login Button Status (Username input is empty)",
+        "username_input": "",
+        "password_input": "pass",
+        "expected_state": false
+    },
+    {
+        "test_id": "U003",
+        "scenario_name": "Login Button Status (Password input is empty)",
+        "username_input": "Deniz",
+        "password_input": "",
+        "expected_state": false
+    },
+    {
+        "test_id": "U004",
+        "scenario_name": "Login Button Status (Both input areas are empty)",
+        "username_input": "",
+        "password_input": "",
+        "expected_state": false
+    },
+    {
+        "test_id": "U005",
+        "scenario_name": "Login Button Status (Less than two character entered to the both input areas)",
+        "username_input": "a",
+        "password_input": "b",
+        "expected_state": false
+    },
+    {
+        "test_id": "U006",
+        "scenario_name": "Login Button Status (Two or more characters entered to the both input areas)",
+        "username_input": "aa",
+        "password_input": "bb",
+        "expected_state": true
+    }
+    
+  ],
+
+  
+  "negative_login_scenarios": [
+    {
+        "test_id": "N001",
+        "scenario_name": "Wrong Password",
+        "username": "Deniz",
+        "password": "wrong-password",
+        "expected_error": "Wrong username or password. Please try again!"
+    },
+    {
+        "test_id": "N002",
+        "scenario_name": "Wrong Username",
+        "username": "wrong-username",
+        "password": "pass",
+        "expected_error": "Wrong username or password. Please try again!"
+    },
+    {
+        "test_id": "N003",
+        "scenario_name": "Wrong Username and Password",
+        "username": "wrong-username",
+        "password": "wrong-password",
+        "expected_error": "Wrong username or password. Please try again!"
+    }
+    
+  ],
+  
+  
+  "positive_login_scenarios": [
+    {
+        "test_id": "P001",
+        "scenario_name": "Correct Normal User",
+        "username": "Deniz",
+        "password": "pass"
+    }
+  ]
+}
