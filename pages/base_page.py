@@ -28,3 +28,15 @@ class BasePage():
     def is_enabled(self, locator):
         element = self.wait.until(EC.presence_of_element_located(locator))
         return element.is_enabled()
+    
+    def can_click_search_button(self):
+       try:
+           self.driver.find_element(*self.SEARCH_BUTTON).click()
+           return True
+       except:
+           return False
+       
+    
+    def check_fields_disabled_after(self, fields_to_check):
+        """Belirli bir alan doldurulduktan sonra kontrol edilecek alanları döner."""
+        return [field for field in fields_to_check if self.get_input_disabled_state(field)]

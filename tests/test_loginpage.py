@@ -3,7 +3,6 @@ import pytest
 
 class TestloginPage():
 
-    # UI Test Cases
     def test_eye_icon_should_work(self, wait, driver, ui_validation_params):
 
         TARGET_SCENARIO = "Eye Icon Control"
@@ -24,7 +23,7 @@ class TestloginPage():
     def test_login_button_should_be_disabled_if_username_input_area_is_empty(self, wait, driver, ui_validation_params):
 
         TARGET_SCENARIO = "Login Button Status (Username input is empty)"
-        #ui_validation_params 
+
     
         username_empty_scenario = next(
             (u, p, t, s) for u, p, t, s in ui_validation_params if t == TARGET_SCENARIO
@@ -103,7 +102,6 @@ class TestloginPage():
         assert is_enabled == expected_state
 
 
-    # Negative Test Cases
 
     def test_invalid_password_should_give_wrong_username_or_password_error(self, wait, driver, negative_login_params):
 
@@ -153,7 +151,6 @@ class TestloginPage():
 
         assert err_text == expected_error
 
-    # Positive Test Cases
 
     def test_valid_login(self, wait, driver, positive_login_params):
 
