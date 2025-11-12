@@ -12,9 +12,11 @@ class SearchPage(BasePage):
     LASTNAME_INPUT = (By.CSS_SELECTOR, "input[formcontrolname='lastName']")
     ORDERNUMBER_INPUT = (By.CSS_SELECTOR, "input[formcontrolname='orderNumber']")
     SEARCH_BUTTON = (By.NAME, "search-btn")
+    CLEAR_BUTTON = (By.NAME,"clear-btn")
+    ERROR_CONTAINER = (By.CSS_SELECTOR, "div.bg-red-500.text-white.text-xs.mt-1.p-1.rounded")
 
-    def __init__(self, wait, driver):
-        super().__init__(wait, driver)
+    def __init__(self, driver, wait):
+        super().__init__(driver, wait)
 
     def load(self, url):
         return super().load(url)
@@ -73,3 +75,29 @@ class SearchPage(BasePage):
     def check_fields_disabled_after_ordernumber(self):
         fields = [self.NATID_INPUT, self.ACCOUNTNUMBER_INPUT, self.GSMNUMBER_INPUT, self.CUSTOMERID_INPUT]
         return self.check_fields_disabled_after(fields)
+    
+
+    def get_error_message(self):
+        return self.get_error_text(self.ERROR_CONTAINER)
+    
+    def click_clear_button(self):
+        self.click(self.CLEAR_BUTTON)
+
+
+    def are_all_fields_empty(self):
+        fields = [
+            self.NATID_INPUT,
+            self.CUSTOMERID_INPUT,
+            self.ACCOUNTNUMBER_INPUT,
+            self.GSMNUMBER_INPUT,
+            self.FIRSTNAME_INPUT,
+            self.LASTNAME_INPUT,
+            self.ORDERNUMBER_INPUT
+    ]
+    
+        for field in fields:
+            try:
+                self.wait.until(lambda d: self.get_attribute(field, "value") == "")
+            except:
+                return False
+        return True
