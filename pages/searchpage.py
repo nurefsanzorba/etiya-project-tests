@@ -3,7 +3,6 @@ from selenium.webdriver.common.by import By
 
 
 class SearchPage(BasePage):
-    # --- Locator'lar ---
     NATID_INPUT = (By.CSS_SELECTOR, "input[formcontrolname='natId']")
     CUSTOMERID_INPUT = (By.CSS_SELECTOR, "input[formcontrolname='customerId']")
     ACCOUNTNUMBER_INPUT = (By.CSS_SELECTOR, "input[formcontrolname='accountNumber']")

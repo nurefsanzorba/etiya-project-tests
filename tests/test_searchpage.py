@@ -98,8 +98,6 @@ class TestSearchPage():
        login_page.load_login()
        login_page.login("test","123456")
 
-
-      
        search_page = SearchPage(driver, wait)
        search_page.enter_gsm_number_only("1457223")
 
