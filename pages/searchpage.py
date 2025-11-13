@@ -4,9 +4,9 @@ from selenium.webdriver.common.by import By
 
 class SearchPage(BasePage):
     NATID_INPUT = (By.CSS_SELECTOR, "input[formcontrolname='natId']")
-    CUSTOMERID_INPUT = (By.CSS_SELECTOR, "input[formcontrolname='customerId']")
+    CUSTOMERID_INPUT = (By.CSS_SELECTOR, "input[formcontrolname='customerNumber']")
     ACCOUNTNUMBER_INPUT = (By.CSS_SELECTOR, "input[formcontrolname='accountNumber']")
-    GSMNUMBER_INPUT = (By.CSS_SELECTOR, "input[formcontrolname='gsmNumber']")
+    GSMNUMBER_INPUT = (By.CSS_SELECTOR, "input[formcontrolname='mobilePhone']")
     FIRSTNAME_INPUT = (By.CSS_SELECTOR, "input[formcontrolname='firstName']")
     LASTNAME_INPUT = (By.CSS_SELECTOR, "input[formcontrolname='lastName']")
     ORDERNUMBER_INPUT = (By.CSS_SELECTOR, "input[formcontrolname='orderNumber']")
