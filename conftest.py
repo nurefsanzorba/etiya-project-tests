@@ -1,79 +1,92 @@
 import pytest
 from selenium.webdriver import Chrome
 from selenium.webdriver.support.ui import WebDriverWait
-from utils.login_json_parser import get_login_scenarios
 from typing import List, Tuple, Any
+from pages.loginpage import LoginPage
+from utils.login_json_parser import get_login_scenarios
 
-@pytest.fixture
+
+@pytest.fixture(scope="session")
 def driver():
     driver = Chrome()
     driver.maximize_window()
     yield driver
     driver.quit()
 
+
 @pytest.fixture
 def wait(driver):
-    wait = WebDriverWait(driver, 10)
-    yield wait
+    return WebDriverWait(driver, 10)
 
-@pytest.fixture(scope='session')
+
+@pytest.fixture
+def login(driver, wait):
+    """
+    Login işlemini yapan fixture.
+    Testlerde @pytest.mark.usefixtures("login") olarak kullanılır.
+    """
+    login_page = LoginPage(driver, wait)
+    login_page.load_login()
+    login_page.login("mutlum123456", "123456")
+    yield login_page
+
+
+@pytest.fixture(scope="session")
 def ui_validation_params() -> List[Tuple[Any, Any, Any, Any]]:
-
-    ui_data_list = get_login_scenarios('ui_validations')
-
+    """
+    UI validation senaryolarını JSON'dan okur ve parametrik olarak döndürür.
+    """
+    ui_data_list = get_login_scenarios("ui_validations")
     ui_params_list = []
-    # 💡 HATA AYIKLAMA BAŞLANGICI
+
     print("\n--- UI Validation Fixture Hata Ayıklama ---")
-    
-
     for key in ui_data_list:
-        username = key.get('username_input')
-        password = key.get('password_input')
-        scenario_name = key.get('scenario_name')
-        excepted_value = None
-        excepted_state = key.get('expected_state')
-        excepted_attribute = key.get('expected_attribute')
+        username = key.get("username_input")
+        password = key.get("password_input")
+        scenario_name = key.get("scenario_name")
+        expected_state = key.get("expected_state")
+        expected_attribute = key.get("expected_attribute")
 
-        if excepted_state is not None:
-            excepted_value = excepted_state
+        expected_value = expected_state if expected_state is not None else expected_attribute
 
-        elif excepted_attribute is not None:
-            excepted_value = excepted_attribute
-        
-        if excepted_value is not None:
-            ui_params_list.append((username, password, scenario_name, excepted_value))
+        if expected_value is not None:
+            ui_params_list.append((username, password, scenario_name, expected_value))
 
     return ui_params_list
 
-@pytest.fixture(scope='session')
+
+@pytest.fixture(scope="session")
 def negative_login_params() -> List[Tuple[Any, Any, Any, Any]]:
-
-    negative_data_list = get_login_scenarios('negative_login_scenarios')
-
+    """
+    Negatif login senaryolarını JSON'dan okur.
+    """
+    negative_data_list = get_login_scenarios("negative_login_scenarios")
     negative_params_list = []
 
     for key in negative_data_list:
-        username = key.get('username')
-        password = key.get('password')
-        scenario_name = key.get('scenario_name')
-        excepted_error = key.get('expected_error')
+        username = key.get("username")
+        password = key.get("password")
+        scenario_name = key.get("scenario_name")
+        expected_error = key.get("expected_error")
 
-        if excepted_error is not None:
-            negative_params_list.append((username, password, scenario_name, excepted_error))
+        if expected_error is not None:
+            negative_params_list.append((username, password, scenario_name, expected_error))
 
     return negative_params_list
 
-@pytest.fixture(scope='session')
+
+@pytest.fixture(scope="session")
 def positive_login_params() -> List[Tuple[Any, Any, Any]]:
-
-    positive_data_list = get_login_scenarios('positive_login_scenarios')
-
+    """
+    Pozitif login senaryolarını JSON'dan okur.
+    """
+    positive_data_list = get_login_scenarios("positive_login_scenarios")
     positive_params_list = []
 
     for key in positive_data_list:
-        username = key.get('username')
-        password = key.get('password')
-        scenario_name = key.get('scenario_name')
+        username = key.get("username")
+        password = key.get("password")
+        scenario_name = key.get("scenario_name")
 
         positive_params_list.append((username, password, scenario_name))
 
