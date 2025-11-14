@@ -1,5 +1,8 @@
 import pytest
 from pages.customerinfo_page import CustomerInfoPage
+from pages.loginpage import LoginPage
+
+
 
 @pytest.mark.usefixtures("driver", "wait", "login")
 class TestCustomerInfoPage:
@@ -7,6 +10,11 @@ class TestCustomerInfoPage:
     CUSTOMER_ID = "CUST-2025-865834"
 
     def test_update_customer_info_success(self, driver, wait):
+        loginpage = LoginPage(driver, wait)
+        loginpage.load_login()
+        loginpage.login("mutlum123456", "123456")
+        
+        
         customer_page = CustomerInfoPage(driver, wait)
         customer_page.open_customer_info(self.CUSTOMER_ID)
         customer_page.click_edit()
