@@ -3,7 +3,7 @@ from selenium.webdriver.support import expected_conditions as EC
 
 class BasePage():
 
-    BASE_URL = "http://localhost:4200"
+    BASE_URL = "http://localhost:4200/"
 
     def __init__(self, driver, wait):
        self.driver = driver

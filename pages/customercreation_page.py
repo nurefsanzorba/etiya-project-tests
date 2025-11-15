@@ -6,20 +6,21 @@ from pages.base_page import BasePage
 class CustomerCreationPage(BasePage):
 
     # === Locators ===
-    CREATE_CUSTOMER_BUTTON = (By.ID, "createCustomerBtn")
-    CANCEL_BUTTON = (By.ID, "cancelBtn")
+    CREATE_CUSTOMER_BUTTON = (By.XPATH, "/html/body/app-root/app-b2c/div/div/app-search/div/div[2]/div[2]/div[2]/div[2]/button")
+    CANCEL_BUTTON = (By.XPATH, "/html/body/app-root/app-b2c/div/div/app-create-customer/div/div/form/div/div[2]/button[1]")
 
     # Demographic info fields
-    FIRST_NAME = (By.ID, "firstName")
-    MIDDLE_NAME = (By.ID, "middleName")
-    LAST_NAME = (By.ID, "lastName")
-    DOB = (By.ID, "birthDate")
-    GENDER = (By.ID, "genderDropdown")
-    FATHER_NAME = (By.ID, "fatherName")
-    MOTHER_NAME = (By.ID, "motherName")
-    NATIONALITY_ID = (By.ID, "nationalityId")
-    NEXT_BUTTON = (By.ID, "nextBtn")
-    WARNING_MSG = (By.CSS_SELECTOR, ".warning-message")
+    FIRST_NAME = (By.CSS_SELECTOR, "input[formcontrolname='firstName']")
+    MIDDLE_NAME = (By.CSS_SELECTOR, "input[formcontrolname='middleName']")
+    LAST_NAME = (By.CSS_SELECTOR, "input[formcontrolname='lastName']")
+    DOB = (By.CSS_SELECTOR, "input[formcontrolname='birthDate']")
+    GENDER = (By.CSS_SELECTOR, "select[formcontrolname='gender']")
+    FATHER_NAME = (By.CSS_SELECTOR, "input[formcontrolname='fatherName']")
+    MOTHER_NAME = (By.CSS_SELECTOR, "input[formcontrolname='motherName']")
+    NATIONALITY_ID = (By.CSS_SELECTOR, "input[formcontrolname='nationalityId']")
+    NEXT_BUTTON = (By.XPATH, "/html/body/app-root/app-b2c/div/div/app-create-customer/div/div/form/div/div[2]/button[2]")
+    WARNING_MSG = (By.CSS_SELECTOR, ".text-red-500.text-xs.mt-1")
+    WARNING_MSG2 = (By.CSS_SELECTOR, ".text-red-600.text-xs.mt-1")
 
     # Address Info
     ADD_NEW_ADDRESS_BUTTON = (By.ID, "addNewAddressBtn")
@@ -59,11 +60,18 @@ class CustomerCreationPage(BasePage):
             self.send_keys(self.MOTHER_NAME, kwargs["mother_name"])
         self.send_keys(self.NATIONALITY_ID, nationality_id)
 
+    
+    def is_next_button_enabled(self):
+        return self.is_enabled(self.NEXT_BUTTON) 
+
+    def get_error_message_for_age(self):
+        return self.get_error_text(self.WARNING_MSG)
+
+    def get_error_message_for_natid(self):
+        return self.get_error_text(self.WARNING_MSG2)    
+
     def submit_demographic(self):
         self.click(self.NEXT_BUTTON)
-
-    def check_duplicate_warning(self):
-        return self.get_text(self.WARNING_MSG)
 
     def add_new_address(self, title, city, street, house_no, description):
         self.click(self.ADD_NEW_ADDRESS_BUTTON)
