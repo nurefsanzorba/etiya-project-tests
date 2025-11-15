@@ -3,7 +3,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from pages.base_page import BasePage
 
 class LoginPage(BasePage):
-    LOGIN_URL = BasePage.BASE_URL + "/login"
+    LOGIN_URL = BasePage.BASE_URL + "login"
     USERNAME_INPUT = (By.CSS_SELECTOR, "input[formcontrolname='username']")
     PASSWORD_INPUT = (By.CSS_SELECTOR, "input[formcontrolname='password']")
     EYE_ICON = (By.CSS_SELECTOR, "button[class='eye-btn']")
@@ -11,8 +11,8 @@ class LoginPage(BasePage):
     LOGIN_ERROR = (By.CSS_SELECTOR, "p[name='login-error']")
 
 
-    def __init__(self, wait, driver):
-        super().__init__(wait, driver)
+    def __init__(self, driver, wait):
+        super().__init__(driver, wait)
 
     def load_login(self):
         self.load(self.LOGIN_URL)
@@ -31,6 +31,8 @@ class LoginPage(BasePage):
     def type_password(self, password):
         self.wait.until(EC.visibility_of_element_located(self.PASSWORD_INPUT)).send_keys(password)
 
+    def type_username(self, username):
+        self.wait.until(EC.visibility_of_element_located(self.USERNAME_INPUT)).send_keys(username)
     def read_password_type_attribute(self):
         return self.get_attribute(self.PASSWORD_INPUT, "type")
     

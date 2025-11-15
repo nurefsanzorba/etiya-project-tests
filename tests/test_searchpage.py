@@ -1,36 +1,28 @@
-from pages.loginpage  import LoginPage
 from pages.searchpage import SearchPage
-
+from data.search_data import SearchData
 
 class TestSearchPage():
 
-    def test_nat_id_11_digit_enables_search(self, driver, wait):
-        login_page = LoginPage(driver, wait)
-        login_page.load_login()
-        login_page.login("test", "123456")
+    c = SearchData()
 
-        search_page = SearchPage(driver, wait)
-        search_page.search_with_11_digit_nat_id("48528397898")
+    def test_nat_id_11_digit_enables_search(self, succes_login, wait):
 
-        assert search_page.is_search_button_enabled() is True
-
-    def test_only_numbers_enables_search(self, driver, wait):
-        login_page = LoginPage(driver, wait)
-        login_page.load_login()
-        login_page.login("test", "123456")
-
-        search_page = SearchPage(driver, wait)
-        search_page.enter_nat_id_only("48528397898")
+        search_page = SearchPage(succes_login, wait)
+        search_page.search_with_11_digit_nat_id(self.c.VALID_NATID)
 
         assert search_page.is_search_button_enabled() is True
 
-    def test_fields_disabled_after_natid(self, driver, wait):
-        login_page = LoginPage(driver, wait)
-        login_page.load_login()
-        login_page.login("test", "123456")
+    def test_only_numbers_enables_search(self, succes_login, wait):
 
-        search_page = SearchPage(driver, wait)
-        search_page.enter_nat_id_only("16322367900")
+        search_page = SearchPage(succes_login, wait)
+        search_page.enter_nat_id_only(self.c.VALID_NATID)
+
+        assert search_page.is_search_button_enabled() is True
+
+    def test_fields_disabled_after_natid(self, succes_login, wait):
+
+        search_page = SearchPage(succes_login, wait)
+        search_page.enter_nat_id_only(self.c.VALID_NATID)
 
         disabled_fields = search_page.check_fields_disabled_after_natid()
         expected_disabled = [
@@ -41,13 +33,10 @@ class TestSearchPage():
         ]
         assert set(disabled_fields) == set(expected_disabled)
 
-    def test_fields_disabled_after_customerid(self, driver, wait):
-        login_page = LoginPage(driver, wait)
-        login_page.load_login()
-        login_page.login("test", "123456")
+    def test_fields_disabled_after_customerid(self, succes_login, wait):
 
-        search_page = SearchPage(driver, wait)
-        search_page.enter_customer_id_only("50fc415a-5eab-4c7c-ad90-88aae1ae3226")
+        search_page = SearchPage(succes_login, wait)
+        search_page.enter_customer_id_only(self.c.CUSTOMER_NUMBER)
 
         disabled_fields = search_page.check_fields_disabled_after_customerid()
         expected_disabled = [
@@ -59,13 +48,10 @@ class TestSearchPage():
         assert set(disabled_fields) == set(expected_disabled)
 
 
-    def test_fields_disabled_after_gsmnumber(self, driver, wait):
-        login_page = LoginPage(driver, wait)
-        login_page.load_login()
-        login_page.login("test", "123456")
+    def test_fields_disabled_after_gsmnumber(self, succes_login, wait):
 
-        search_page = SearchPage(driver, wait)
-        search_page.enter_gsm_number_only("05556667788")
+        search_page = SearchPage(succes_login, wait)
+        search_page.enter_gsm_number_only(self.c.VALID_GSM)
 
         disabled_fields = search_page.check_fields_disabled_after_gsmnumber()
         expected_disabled = [
@@ -76,63 +62,46 @@ class TestSearchPage():
         ]
         assert set(disabled_fields) == set(expected_disabled)    
 
-    def test_first_name_enables_search(self, driver, wait):
-        login_page = LoginPage(driver, wait)
-        login_page.load_login()
-        login_page.login("test", "123456")
+    def test_first_name_enables_search(self, succes_login, wait):
 
-        search_page = SearchPage(driver, wait)
-        search_page.enter_first_name_only("Ali")
+        search_page = SearchPage(succes_login, wait)
+        search_page.enter_first_name_only(self.c.FIRST_NAME)
 
         assert search_page.is_search_button_enabled() is True
 
-    def test_last_name_enables_search(self, driver, wait):
-        login_page = LoginPage(driver, wait)
-        login_page.load_login()
-        login_page.login("test", "123456")
+    def test_last_name_enables_search(self, succes_login, wait):
 
-        search_page = SearchPage(driver, wait)
-        search_page.enter_last_name_only("Veli")
+        search_page = SearchPage(succes_login, wait)
+        search_page.enter_last_name_only(self.c.LAST_NAME)
 
         assert search_page.is_search_button_enabled() is True
 
 
 
-    def test_nat_id_less_than_11_digit_enables_search(self,driver,wait):
-       login_page = LoginPage(driver, wait)
-       login_page.load_login()
-       login_page.login("test","123456")
+    def test_nat_id_less_than_11_digit_enables_search(self,succes_login,wait):
+
+       search_page = SearchPage(succes_login, wait)
+       search_page.search_with_11_digit_nat_id(self.c.INVALID_NATID)
+
+       assert search_page.get_error_message() == self.c.ERROR_INVALID_NATID
 
 
-      
-       search_page = SearchPage(driver, wait)
-       search_page.search_with_11_digit_nat_id("163223")
+    def test_gsm_number_not_between_10_and_15_digit_enables_search(self,succes_login,wait):
 
-       assert search_page.get_error_message() == "NAT ID must be an 11-digit number." 
+       search_page = SearchPage(succes_login, wait)
+       search_page.enter_gsm_number_only(self.c.INVALID_GSM)
 
-
-    def test_gsm_number_not_between_10_and_15_digit_enables_search(self,driver,wait):
-       login_page = LoginPage(driver, wait)
-       login_page.load_login()
-       login_page.login("test","123456")
-
-       search_page = SearchPage(driver, wait)
-       search_page.enter_gsm_number_only("1457223")
-
-       assert search_page.get_error_message() == "GSM Number must be between 10 to 15 digits."       
+       assert search_page.get_error_message() == self.c.ERROR_INVALID_GSM      
 
          
-    def test_clear_button_clears_all_fields(self, driver, wait):
-        login_page = LoginPage(driver, wait)
-        login_page.load_login()
-        login_page.login("test","123456")
+    def test_clear_button_clears_all_fields(self, succes_login, wait):
 
-        search_page = SearchPage(driver, wait)
+        search_page = SearchPage(succes_login, wait)
     
     
-        search_page.enter_nat_id_only("16322367900")
-        search_page.enter_first_name_only("Ali")
-        search_page.enter_last_name_only("Veli")
+        search_page.enter_nat_id_only(self.c.VALID_NATID)
+        search_page.enter_first_name_only(self.c.FIRST_NAME)
+        search_page.enter_last_name_only(self.c.LAST_NAME)
     
    
         search_page.click_clear_button()

@@ -23,15 +23,15 @@ class CustomerCreationPage(BasePage):
     WARNING_MSG2 = (By.CSS_SELECTOR, ".text-red-600.text-xs.mt-1")
 
     # Address Info
-    ADD_NEW_ADDRESS_BUTTON = (By.ID, "addNewAddressBtn")
+    ADD_NEW_ADDRESS_BUTTON = (By.XPATH, "//button[normalize-space(text())='Add New Address']")
     ADDRESS_TITLE = (By.ID, "addressTitle")
     CITY = (By.ID, "city")
     STREET = (By.ID, "street")
     HOUSE_NUMBER = (By.ID, "houseNumber")
-    ADDRESS_DESCRIPTION = (By.ID, "addressDescription")
-    ADDRESS_SAVE_BUTTON = (By.ID, "saveAddressBtn")
-    ADDRESS_NEXT_BUTTON = (By.ID, "nextAddressBtn")
-    PREVIOUS_BUTTON = (By.ID, "previousBtn")
+    ADDRESS_DESCRIPTION = (By.ID, "description")
+    ADDRESS_SAVE_BUTTON = (By.XPATH, "//button[normalize-space(text())='Save']")
+    ADDRESS_NEXT_BUTTON = (By.XPATH, "//button[normalize-space(text())='Next']")
+    PREVIOUS_BUTTON = (By.XPATH, "//button[normalize-space(text())='Previous']")
 
     # Contact Info
     EMAIL = (By.ID, "email")
@@ -40,6 +40,9 @@ class CustomerCreationPage(BasePage):
     FAX = (By.ID, "fax")
     CREATE_BUTTON = (By.ID, "createBtn")
     EMAIL_ERROR = (By.CSS_SELECTOR, ".email-error")
+
+    def __init__(self, driver, wait):
+        super().__init__(driver, wait)
 
     # === Methods ===
     def open_customer_creation(self):
@@ -62,7 +65,10 @@ class CustomerCreationPage(BasePage):
 
     
     def is_next_button_enabled(self):
-        return self.is_enabled(self.NEXT_BUTTON) 
+        return self.is_enabled(self.ADDRESS_NEXT_BUTTON) 
+    
+    def is_save_button_enabled(self):
+        return self.is_enabled(self.ADDRESS_SAVE_BUTTON) 
 
     def get_error_message_for_age(self):
         return self.get_error_text(self.WARNING_MSG)
@@ -82,6 +88,14 @@ class CustomerCreationPage(BasePage):
         self.send_keys(self.ADDRESS_DESCRIPTION, description)
         self.click(self.ADDRESS_SAVE_BUTTON)
 
+    def check_add_new_address(self, title, city, street, house_no, description):
+        self.click(self.ADD_NEW_ADDRESS_BUTTON)
+        self.send_keys(self.ADDRESS_TITLE, title)
+        self.send_keys(self.CITY, city)
+        self.send_keys(self.STREET, street)
+        self.send_keys(self.HOUSE_NUMBER, house_no)
+        self.send_keys(self.ADDRESS_DESCRIPTION, description)
+        
     def go_to_contact_info(self):
         self.click(self.ADDRESS_NEXT_BUTTON)
 
