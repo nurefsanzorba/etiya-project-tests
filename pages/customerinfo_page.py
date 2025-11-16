@@ -5,12 +5,12 @@ from pages.loginpage import LoginPage
 
 class CustomerInfoPage(BasePage):
 
-    EDIT_BUTTON = (By.CSS_SELECTOR, "button.px-6.py-2.border-gray-300")
-    DELETE_CUSTOMER_BUTTON = (By.XPATH, "//button[text()='Delete Customer']")
-    SAVE_BUTTON = (By.XPATH, "//button[text()='Save']")
-    CANCEL_BUTTON = (By.XPATH, "//button[text()='Cancel']")
-    CONFIRM_DELETE_BUTTON = (By.XPATH, "//button[text()='Delete']")
-    CANCEL_DELETE_BUTTON = (By.XPATH, "//button[text()='Cancel']")
+    EDIT_BUTTON = (By.XPATH, "//button[normalize-space(text())='Edit']")
+    DELETE_CUSTOMER_BUTTON = (By.XPATH, "//button[normalize-space(text())='Delete Customer']")
+    SAVE_BUTTON = (By.XPATH, "//button[normalize-space(text())='Save']")
+    CANCEL_BUTTON = (By.XPATH, "//button[normalize-space(text())='Cancel']")
+    CONFIRM_DELETE_BUTTON = (By.XPATH, "//button[normalize-space(text())='Delete']")
+    CANCEL_DELETE_BUTTON = (By.XPATH, "//button[normalize-space(text())='Cancel']")
     DELETE_POPUP = (By.CSS_SELECTOR, "div.bg-white.rounded-lg.shadow-xl.p-6")
     WARNING_MESSAGE = (By.CSS_SELECTOR, "p.text-gray-700")
 
@@ -33,6 +33,10 @@ class CustomerInfoPage(BasePage):
     def fill_customer_info(self, firstName=None, middleName=None, lastName=None,
                            birthDate=None, gender=None, fatherName=None,
                            motherName=None, nationalityId=None):
+
+        self.clear_input_field(self.FIRST_NAME_INPUT) 
+        self.clear_input_field(self.LAST_NAME_INPUT)
+        self.clear_input_field(self. NATIONALITY_ID_INPUT)  
 
         if firstName is not None:
             self.send_keys(self.FIRST_NAME_INPUT, firstName)

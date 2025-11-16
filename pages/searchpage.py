@@ -13,12 +13,19 @@ class SearchPage(BasePage):
     SEARCH_BUTTON = (By.NAME, "search-btn")
     CLEAR_BUTTON = (By.NAME,"clear-btn")
     ERROR_CONTAINER = (By.CSS_SELECTOR, "div.bg-red-500.text-white.text-xs.mt-1.p-1.rounded")
+    CUSTOMER_ID_BUTTON =(By.ID,"customer-info-btn")
 
+
+    
     def __init__(self, driver, wait):
         super().__init__(driver, wait)
 
     def load(self, url):
         return super().load(url)
+
+    def click_first_customer_id_button(self):
+        self.click(self.CUSTOMER_ID_BUTTON)    
+        
     
     def search_with_11_digit_nat_id(self, natid):
         self.send_keys(self.NATID_INPUT, natid)

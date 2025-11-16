@@ -46,4 +46,5 @@ class BasePage():
     def get_error_text(self, locator):
         return self.wait.until(EC.visibility_of_element_located(locator)).text
     
-    
+    def clear_input_field(self,locator):
+        self.wait.until(EC.visibility_of_element_located(locator)).clear()

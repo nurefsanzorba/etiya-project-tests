@@ -3,6 +3,9 @@ from selenium.webdriver import Chrome
 from selenium.webdriver.support.ui import WebDriverWait
 from pages.loginpage import LoginPage
 from pages.customercreation_page import CustomerCreationPage
+from pages.searchpage import SearchPage
+from pages.customerinfo_page import CustomerInfoPage
+
 
 @pytest.fixture
 def driver():
@@ -46,4 +49,14 @@ def succes_demographic_info(succes_login, wait):
     customer_page.submit_demographic()
 
     yield driver
+
+
+@pytest.fixture
+def open_customer_info_page(succes_login,wait):
+    driver = succes_login
+    customer_search_page= SearchPage(driver,wait)
+    customer_search_page.search_with_11_digit_nat_id("48528397800")
+    customer_search_page.click_first_customer_id_button()
+    yield driver
+    
 
