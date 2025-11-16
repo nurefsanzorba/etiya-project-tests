@@ -23,23 +23,23 @@ class CustomerCreationPage(BasePage):
     WARNING_MSG2 = (By.CSS_SELECTOR, ".text-red-600.text-xs.mt-1")
 
     # Address Info
-    ADD_NEW_ADDRESS_BUTTON = (By.XPATH, "//button[normalize-space(text())='Add New Address']")
-    ADDRESS_TITLE = (By.ID, "addressTitle")
-    CITY = (By.ID, "city")
-    STREET = (By.ID, "street")
-    HOUSE_NUMBER = (By.ID, "houseNumber")
-    ADDRESS_DESCRIPTION = (By.ID, "description")
-    ADDRESS_SAVE_BUTTON = (By.XPATH, "//button[normalize-space(text())='Save']")
-    ADDRESS_NEXT_BUTTON = (By.XPATH, "//button[normalize-space(text())='Next']")
-    PREVIOUS_BUTTON = (By.XPATH, "//button[normalize-space(text())='Previous']")
+    ADD_NEW_ADDRESS_BUTTON = (By.XPATH, "/html/body/app-root/app-b2c/div/div/app-create-customer/div/div/form/div/div[1]/button")
+    ADDRESS_TITLE = (By.CSS_SELECTOR, "input[formcontrolname='title']")
+    CITY = (By.CSS_SELECTOR, "select[formcontrolname='cityId']")
+    STREET = (By.CSS_SELECTOR, "input[formcontrolname='street']")
+    HOUSE_NUMBER = (By.CSS_SELECTOR, "input[formcontrolname='houseNumber']")
+    ADDRESS_DESCRIPTION = (By.CSS_SELECTOR, "textarea[formcontrolname='description']")
+    ADDRESS_SAVE_BUTTON = (By.XPATH, "/html/body/app-root/app-b2c/div/div/app-create-customer/div/div/form/div/div[1]/div[2]/button[2]")
+    ADDRESS_NEXT_BUTTON = (By.XPATH, "/html/body/app-root/app-b2c/div/div/app-create-customer/div/div/form/div/div[3]/button[2]")
+    PREVIOUS_BUTTON = (By.XPATH, "/html/body/app-root/app-b2c/div/div/app-create-customer/div/div/form/div/div[2]/button[1]")
 
     # Contact Info
-    EMAIL = (By.ID, "email")
-    HOME_PHONE = (By.ID, "homePhone")
-    MOBILE_PHONE = (By.ID, "mobilePhone")
-    FAX = (By.ID, "fax")
-    CREATE_BUTTON = (By.ID, "createBtn")
-    EMAIL_ERROR = (By.CSS_SELECTOR, ".email-error")
+    EMAIL = (By.CSS_SELECTOR, "input[formcontrolname='email']")
+    HOME_PHONE = (By.CSS_SELECTOR, "input[formcontrolname='homePhone']")
+    MOBILE_PHONE = (By.CSS_SELECTOR, "input[formcontrolname='mobilePhone']")
+    FAX = (By.CSS_SELECTOR, "input[formcontrolname='fax']")
+    CREATE_BUTTON = (By.XPATH, "/html/body/app-root/app-b2c/div/div/app-create-customer/div/div/form/div/div[2]/button[2]")
+    ERROR = (By.CSS_SELECTOR, "p.mt-1.text-xs.text-red-600")
 
     def __init__(self, driver, wait):
         super().__init__(driver, wait)
@@ -65,16 +65,26 @@ class CustomerCreationPage(BasePage):
 
     
     def is_next_button_enabled(self):
-        return self.is_enabled(self.ADDRESS_NEXT_BUTTON) 
+        return self.is_enabled(self.ADDRESS_NEXT_BUTTON)
+
+    def wait_until_next_button_enabled(self):
+        self.wait.until(lambda d: d.find_element(*self.ADDRESS_NEXT_BUTTON).is_enabled())
+ 
     
     def is_save_button_enabled(self):
-        return self.is_enabled(self.ADDRESS_SAVE_BUTTON) 
+        return self.is_enabled(self.ADDRESS_SAVE_BUTTON)
+
+    def is_create_button_enabled(self):
+        return self.is_enabled(self.CREATE_BUTTON)  
 
     def get_error_message_for_age(self):
         return self.get_error_text(self.WARNING_MSG)
 
     def get_error_message_for_natid(self):
-        return self.get_error_text(self.WARNING_MSG2)    
+        return self.get_error_text(self.WARNING_MSG2)  
+
+    def get_error_message_for_conatctinfo(self):
+        return self.get_error_text(self.ERROR)   
 
     def submit_demographic(self):
         self.click(self.NEXT_BUTTON)
@@ -97,7 +107,13 @@ class CustomerCreationPage(BasePage):
         self.send_keys(self.ADDRESS_DESCRIPTION, description)
         
     def go_to_contact_info(self):
-        self.click(self.ADDRESS_NEXT_BUTTON)
+        self.force_click_next_button()
+
+    def force_click_next_button(self):
+ 
+        next_button = self.driver.find_element(*self.ADDRESS_NEXT_BUTTON)
+        self.driver.execute_script("arguments[0].click();", next_button)
+
 
     def fill_contact_info(self, email, mobile_phone, **kwargs):
         self.send_keys(self.EMAIL, email)

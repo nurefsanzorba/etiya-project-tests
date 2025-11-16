@@ -28,7 +28,7 @@ def succes_login(driver, wait):
     """
     login_page = LoginPage(driver, wait)
     login_page.load_login()
-    login_page.login("selenium-test", "s3l3n1um-t3st")
+    login_page.login("test", "123456")
     yield driver
 
 @pytest.fixture
