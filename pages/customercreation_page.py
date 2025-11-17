@@ -18,7 +18,7 @@ class CustomerCreationPage(BasePage):
     FATHER_NAME = (By.CSS_SELECTOR, "input[formcontrolname='fatherName']")
     MOTHER_NAME = (By.CSS_SELECTOR, "input[formcontrolname='motherName']")
     NATIONALITY_ID = (By.CSS_SELECTOR, "input[formcontrolname='nationalityId']")
-    NEXT_BUTTON = (By.XPATH, "/html/body/app-root/app-b2c/div/div/app-create-customer/div/div/form/div/div[2]/button[2]")
+    NEXT_BUTTON = (By.XPATH, "//button[normalize-space(text())='Next']")
     WARNING_MSG = (By.CSS_SELECTOR, ".text-red-500.text-xs.mt-1")
     WARNING_MSG2 = (By.CSS_SELECTOR, ".text-red-600.text-xs.mt-1")
 
@@ -65,7 +65,7 @@ class CustomerCreationPage(BasePage):
 
     
     def is_next_button_enabled(self):
-        return self.is_enabled(self.ADDRESS_NEXT_BUTTON)
+        return self.is_enabled(self.NEXT_BUTTON)
 
     def wait_until_next_button_enabled(self):
         self.wait.until(lambda d: d.find_element(*self.ADDRESS_NEXT_BUTTON).is_enabled())

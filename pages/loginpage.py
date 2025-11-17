@@ -11,7 +11,7 @@ class LoginPage(BasePage):
     LOGIN_ERROR = (By.CSS_SELECTOR, "p[name='login-error']")
 
 
-    def __init__(self, driver, wait):
+    def __init__(self, wait, driver):
         super().__init__(driver, wait)
 
     def load_login(self):

@@ -26,7 +26,7 @@ def succes_login(driver, wait):
     Login işlemini yapan fixture.
     Testlerde @pytest.mark.usefixtures("login") olarak kullanılır.
     """
-    login_page = LoginPage(driver, wait)
+    login_page = LoginPage(wait, driver)
     login_page.load_login()
     login_page.login("test", "123456")
     yield driver
