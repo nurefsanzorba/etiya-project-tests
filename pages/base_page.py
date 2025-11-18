@@ -48,3 +48,7 @@ class BasePage():
     
     def clear_input_field(self,locator):
         self.wait.until(EC.visibility_of_element_located(locator)).clear()
+
+    def get_elemets_from_locator(self, locator):
+
+        return self.wait.until(EC.visibility_of_any_elements_located(locator))
